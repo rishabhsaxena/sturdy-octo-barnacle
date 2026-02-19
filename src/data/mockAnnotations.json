@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-1",
+    "label": "PO Number",
+    "x": 562,
+    "y": 88,
+    "width": 178,
+    "height": 24,
+    "color": "#3498db"
+  },
+  {
+    "id": "ann-2",
+    "label": "Date",
+    "x": 562,
+    "y": 110,
+    "width": 178,
+    "height": 24,
+    "color": "#2ecc71"
+  },
+  {
+    "id": "ann-3",
+    "label": "Vendor Name",
+    "x": 140,
+    "y": 236,
+    "width": 165,
+    "height": 24,
+    "color": "#e74c3c"
+  },
+  {
+    "id": "ann-4",
+    "label": "Vendor Address",
+    "x": 140,
+    "y": 257,
+    "width": 180,
+    "height": 44,
+    "color": "#9b59b6"
+  },
+  {
+    "id": "ann-5",
+    "label": "Line Item",
+    "x": 63,
+    "y": 424,
+    "width": 678,
+    "height": 35,
+    "color": "#f39c12"
+  },
+  {
+    "id": "ann-6",
+    "label": "Line Item",
+    "x": 63,
+    "y": 457,
+    "width": 678,
+    "height": 70,
+    "color": "#f39c12"
+  },
+  {
+    "id": "ann-7",
+    "label": "Line Item",
+    "x": 63,
+    "y": 525,
+    "width": 678,
+    "height": 54,
+    "color": "#f39c12"
+  },
+  {
+    "id": "ann-8",
+    "label": "Total Amount",
+    "x": 508,
+    "y": 929,
+    "width": 234,
+    "height": 33,
+    "color": "#1abc9c"
+  },
+  {
+    "id": "ann-9",
+    "label": "Tax Amount",
+    "x": 508,
+    "y": 902,
+    "width": 234,
+    "height": 27,
+    "color": "#e67e22"
+  },
+  {
+    "id": "ann-10",
+    "label": "Ship To",
+    "x": 421,
+    "y": 236,
+    "width": 322,
+    "height": 85,
+    "color": "#3498db"
+  }
+]

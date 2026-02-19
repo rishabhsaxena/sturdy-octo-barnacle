@@ -1,0 +1,154 @@
+{
+  "ann-1": [
+    {
+      "id": "c-1",
+      "author": "Alice",
+      "text": "Verified against purchase order PO-2024-0312. Match confirmed.",
+      "timestamp": "2024-01-16T09:15:00Z"
+    },
+    {
+      "id": "c-2",
+      "author": "Bob",
+      "text": "OCR confidence: 0.97. No manual correction needed.",
+      "timestamp": "2024-01-16T10:30:00Z"
+    }
+  ],
+  "ann-2": [
+    {
+      "id": "c-3",
+      "author": "Charlie",
+      "text": "Date format matches expected MM/DD/YYYY pattern.",
+      "timestamp": "2024-01-16T11:00:00Z"
+    },
+    {
+      "id": "c-4",
+      "author": "Alice",
+      "text": "Cross-referenced with delivery receipt. Dates align.",
+      "timestamp": "2024-01-16T14:20:00Z"
+    }
+  ],
+  "ann-3": [
+    {
+      "id": "c-5",
+      "author": "Bob",
+      "text": "Vendor exists in our approved supplier database.",
+      "timestamp": "2024-01-17T08:45:00Z"
+    },
+    {
+      "id": "c-6",
+      "author": "Alice",
+      "text": "OCR confidence: 0.92. Slight blur on 'Corporation' — verify manually.",
+      "timestamp": "2024-01-17T09:10:00Z"
+    },
+    {
+      "id": "c-7",
+      "author": "Charlie",
+      "text": "Confirmed correct after manual check.",
+      "timestamp": "2024-01-17T10:00:00Z"
+    }
+  ],
+  "ann-4": [
+    {
+      "id": "c-8",
+      "author": "Alice",
+      "text": "Address matches W-9 on file.",
+      "timestamp": "2024-01-17T10:15:00Z"
+    },
+    {
+      "id": "c-9",
+      "author": "Bob",
+      "text": "Suite number correctly captured this time.",
+      "timestamp": "2024-01-17T11:30:00Z"
+    }
+  ],
+  "ann-5": [
+    {
+      "id": "c-10",
+      "author": "Charlie",
+      "text": "Line item matches SOW section 3.1.",
+      "timestamp": "2024-01-18T09:00:00Z"
+    },
+    {
+      "id": "c-11",
+      "author": "Alice",
+      "text": "Amount verified against project budget allocation.",
+      "timestamp": "2024-01-18T10:00:00Z"
+    }
+  ],
+  "ann-6": [
+    {
+      "id": "c-12",
+      "author": "Bob",
+      "text": "UI/UX package — needs manager approval for amounts over $3,000.",
+      "timestamp": "2024-01-18T10:30:00Z"
+    },
+    {
+      "id": "c-13",
+      "author": "Alice",
+      "text": "Manager approval obtained. See attachment in ticket PROC-847.",
+      "timestamp": "2024-01-18T14:00:00Z"
+    }
+  ],
+  "ann-7": [
+    {
+      "id": "c-14",
+      "author": "Alice",
+      "text": "Total matches sum of line items + tax. Verified.",
+      "timestamp": "2024-01-19T09:00:00Z"
+    },
+    {
+      "id": "c-15",
+      "author": "Charlie",
+      "text": "Needs review — slight discrepancy with PO total ($16,330.00 on PO).",
+      "timestamp": "2024-01-19T09:30:00Z"
+    },
+    {
+      "id": "c-16",
+      "author": "Bob",
+      "text": "Rounding difference. PO was estimated. Invoice amount is correct.",
+      "timestamp": "2024-01-19T10:15:00Z"
+    }
+  ],
+  "ann-8": [
+    {
+      "id": "c-17",
+      "author": "Charlie",
+      "text": "Tax rate 8.5% applied correctly for San Francisco jurisdiction.",
+      "timestamp": "2024-01-19T11:00:00Z"
+    },
+    {
+      "id": "c-18",
+      "author": "Alice",
+      "text": "OCR confidence: 0.95. Amount looks correct.",
+      "timestamp": "2024-01-19T11:30:00Z"
+    }
+  ],
+  "ann-9": [
+    {
+      "id": "c-19",
+      "author": "Bob",
+      "text": "30-day terms confirmed. Due date is correct.",
+      "timestamp": "2024-01-19T14:00:00Z"
+    },
+    {
+      "id": "c-20",
+      "author": "Alice",
+      "text": "Added to payment calendar.",
+      "timestamp": "2024-01-19T15:00:00Z"
+    }
+  ],
+  "ann-10": [
+    {
+      "id": "c-21",
+      "author": "Charlie",
+      "text": "Duplicate annotation — same region as ann-1. Should be removed.",
+      "timestamp": "2024-01-20T08:00:00Z"
+    },
+    {
+      "id": "c-22",
+      "author": "Alice",
+      "text": "Keeping for now — created during QA pass. Will clean up later.",
+      "timestamp": "2024-01-20T09:00:00Z"
+    }
+  ]
+}
