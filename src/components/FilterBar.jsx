@@ -1,6 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-export default function FilterBar({ annotations, activeFilter, onFilterChange }) {
+export default function FilterBar({
+  annotations,
+  activeFilter,
+  onFilterChange,
+}) {
   const [labelCounts, setLabelCounts] = useState({});
   const [filteredCount, setFilteredCount] = useState(0);
 
@@ -17,7 +21,7 @@ export default function FilterBar({ annotations, activeFilter, onFilterChange })
   useEffect(() => {
     if (activeFilter) {
       setFilteredCount(
-        annotations.filter((ann) => ann.label === activeFilter).length
+        annotations.filter((ann) => ann.label === activeFilter).length,
       );
     } else {
       setFilteredCount(annotations.length);
@@ -30,7 +34,7 @@ export default function FilterBar({ annotations, activeFilter, onFilterChange })
     <div className="filter-bar">
       <span className="filter-label">Filter:</span>
       <button
-        className={`filter-btn ${activeFilter === null ? 'active' : ''}`}
+        className={`filter-btn ${activeFilter === null ? "active" : ""}`}
         onClick={() => onFilterChange(null)}
       >
         All ({annotations.length})
@@ -38,7 +42,7 @@ export default function FilterBar({ annotations, activeFilter, onFilterChange })
       {labels.map((label) => (
         <button
           key={label}
-          className={`filter-btn ${activeFilter === label ? 'active' : ''}`}
+          className={`filter-btn ${activeFilter === label ? "active" : ""}`}
           onClick={() => onFilterChange(label)}
         >
           {label} ({labelCounts[label]})
