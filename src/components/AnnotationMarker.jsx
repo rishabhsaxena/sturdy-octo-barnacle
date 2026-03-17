@@ -9,34 +9,34 @@ export default function AnnotationMarker({
   const index = annotations.findIndex((a) => a.id === annotation.id) + 1;
   const total = annotations.length;
   const style = {
-    position: 'absolute',
+    position: "absolute",
     left: annotation.x,
     top: annotation.y,
     width: annotation.width,
     height: annotation.height,
-    border: `2px solid ${annotation.color || '#3498db'}`,
+    border: `2px solid ${annotation.color || "#3498db"}`,
     backgroundColor: isSelected
-      ? `${annotation.color || '#3498db'}33`
-      : `${annotation.color || '#3498db'}15`,
-    cursor: createMode ? 'crosshair' : 'pointer',
+      ? `${annotation.color || "#3498db"}33`
+      : `${annotation.color || "#3498db"}15`,
+    cursor: createMode ? "crosshair" : "pointer",
     zIndex: isSelected ? 10 : 1,
-    transition: 'background-color 0.15s ease',
-    boxSizing: 'border-box',
+    transition: "background-color 0.15s ease",
+    boxSizing: "border-box",
   };
 
   const labelStyle = {
-    position: 'absolute',
+    position: "absolute",
     top: -20,
     left: 0,
     fontSize: 11,
     fontWeight: 600,
-    color: '#fff',
-    backgroundColor: annotation.color || '#3498db',
-    padding: '1px 6px',
-    borderRadius: '3px 3px 0 0',
-    whiteSpace: 'nowrap',
-    pointerEvents: 'none',
-    lineHeight: '16px',
+    color: "#fff",
+    backgroundColor: annotation.color || "#3498db",
+    padding: "1px 6px",
+    borderRadius: "3px 3px 0 0",
+    whiteSpace: "nowrap",
+    pointerEvents: "none",
+    lineHeight: "16px",
   };
 
   return (
@@ -60,17 +60,17 @@ export default function AnnotationMarker({
             onDelete(annotation.id);
           }}
           style={{
-            position: 'absolute',
+            position: "absolute",
             top: -20,
             right: 0,
-            background: '#e74c3c',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '3px',
-            cursor: 'pointer',
+            background: "#e74c3c",
+            color: "#fff",
+            border: "none",
+            borderRadius: "3px",
+            cursor: "pointer",
             fontSize: 11,
-            padding: '1px 5px',
-            lineHeight: '16px',
+            padding: "1px 5px",
+            lineHeight: "16px",
           }}
         >
           ×

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
 const ZOOM_LEVELS = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
@@ -25,16 +25,33 @@ function useZoom(onZoomChange) {
     onZoomChange(zoom);
   }, [zoom, onZoomChange]);
 
-  return { zoom, canZoomIn, canZoomOut, handleZoomIn, handleZoomOut, handleResetZoom };
+  return {
+    zoom,
+    canZoomIn,
+    canZoomOut,
+    handleZoomIn,
+    handleZoomOut,
+    handleResetZoom,
+  };
 }
 
 export default function Toolbar({
   onZoomChange,
   createMode,
   onToggleCreateMode,
+  undo,
+  redo,
+  canUndo,
+  canRedo,
 }) {
-  const { zoom, canZoomIn, canZoomOut, handleZoomIn, handleZoomOut, handleResetZoom } =
-    useZoom(onZoomChange);
+  const {
+    zoom,
+    canZoomIn,
+    canZoomOut,
+    handleZoomIn,
+    handleZoomOut,
+    handleResetZoom,
+  } = useZoom(onZoomChange);
 
   return (
     <div className="toolbar">
@@ -56,18 +73,41 @@ export default function Toolbar({
         >
           +
         </button>
-        <button className="toolbar-btn" onClick={handleResetZoom} title="Reset Zoom">
+        <button
+          className="toolbar-btn"
+          onClick={handleResetZoom}
+          title="Reset Zoom"
+        >
           Reset
         </button>
       </div>
 
       <div className="toolbar-group">
         <button
-          className={`toolbar-btn create-mode-btn ${createMode ? 'active' : ''}`}
-          onClick={onToggleCreateMode}
-          title={createMode ? 'Exit Create Mode' : 'Enter Create Mode'}
+          className="toolbar-btn"
+          onClick={undo}
+          disabled={!canUndo}
+          title="Undo (Ctrl+Z)"
         >
-          {createMode ? '✕ Cancel' : '+ New Annotation'}
+          ↶ Undo
+        </button>
+        <button
+          className="toolbar-btn"
+          onClick={redo}
+          disabled={!canRedo}
+          title="Redo (Ctrl+Y)"
+        >
+          ↷ Redo
+        </button>
+      </div>
+
+      <div className="toolbar-group">
+        <button
+          className={`toolbar-btn create-mode-btn ${createMode ? "active" : ""}`}
+          onClick={onToggleCreateMode}
+          title={createMode ? "Exit Create Mode" : "Enter Create Mode"}
+        >
+          {createMode ? "✕ Cancel" : "+ New Annotation"}
         </button>
       </div>
     </div>

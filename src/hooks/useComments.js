@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import allComments from '../data/mockComments.json';
 
-export function useComments(annotationId) {
+export function useComments(annotationId, history) {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!annotationId) return;
 
-    setLoading(true);
+    Promise.resolve().then(() => setLoading(true));
 
     // Simulate API fetch with timeout
     const timer = setTimeout(() => {
@@ -18,17 +18,25 @@ export function useComments(annotationId) {
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [annotationId, comments]);
+  }, [annotationId]);
 
-  const addComment = (text) => {
+  const addComment = useCallback((text, isHistoryAction = false) => {
     const newComment = {
       id: `c-${Date.now()}`,
       author: 'You',
       text,
       timestamp: new Date().toISOString(),
     };
+    
     setComments((prev) => [...prev, newComment]);
-  };
+
+    if (!isHistoryAction && history) {
+      history.record({
+        undo: () => setComments((prev) => prev.filter(c => c.id !== newComment.id)),
+        redo: () => setComments((prev) => [...prev, newComment]),
+      });
+    }
+  }, [history]);
 
   return { comments, loading, addComment };
 }

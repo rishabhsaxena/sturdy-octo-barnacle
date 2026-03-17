@@ -1,32 +1,87 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import AnnotationLayer from './AnnotationLayer';
-import CommentsPanel from './CommentsPanel';
-import Toolbar from './Toolbar';
-import FilterBar from './FilterBar';
-import sampleDocument from '../data/sampleDocument2.png';
-import initialAnnotations from '../data/mockAnnotations.json';
+import { useState, useRef, useEffect, useCallback, useReducer } from "react";
+import AnnotationLayer from "./AnnotationLayer";
+import CommentsPanel from "./CommentsPanel";
+import Toolbar from "./Toolbar";
+import FilterBar from "./FilterBar";
+import { useHistory } from "../hooks/useHistory";
+import sampleDocument from "../data/sampleDocument2.png";
+import initialAnnotations from "../data/mockAnnotations.json";
 
 const ZOOM_LEVELS = [0.5, 0.75, 1, 1.25, 1.5, 2];
+
+const annotationReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD":
+      return [...state, action.payload];
+    case "UPDATE":
+      return state.map((ann) =>
+        ann.id === action.id ? { ...ann, ...action.updates } : ann,
+      );
+    case "DELETE":
+      return state.filter((ann) => ann.id !== action.id);
+    case "SET":
+      return action.payload;
+    default:
+      return state;
+  }
+};
 
 export default function DocumentViewer() {
   const containerRef = useRef(null);
 
-  // --- Annotation state (inlined from useAnnotations) ---
-  const [annotations, setAnnotations] = useState(initialAnnotations);
+  // --- Annotation state ---
+  const [annotations, dispatch] = useReducer(
+    annotationReducer,
+    initialAnnotations,
+  );
+  const history = useHistory();
 
-  const addAnnotation = useCallback((annotation) => {
-    setAnnotations((prev) => [...prev, annotation]);
-  }, []);
+  const addAnnotation = useCallback(
+    (annotation, isHistoryAction = false) => {
+      dispatch({ type: "ADD", payload: annotation });
 
-  const updateAnnotation = useCallback((id, updates) => {
-    setAnnotations((prev) =>
-      prev.map((ann) => (ann.id === id ? { ...ann, ...updates } : ann))
-    );
-  }, []);
+      if (!isHistoryAction) {
+        history.record({
+          undo: () => dispatch({ type: "DELETE", id: annotation.id }),
+          redo: () => dispatch({ type: "ADD", payload: annotation }),
+        });
+      }
+    },
+    [history],
+  );
 
-  const deleteAnnotation = useCallback((id) => {
-    setAnnotations((prev) => prev.filter((ann) => ann.id !== id));
-  }, []);
+  const updateAnnotation = useCallback(
+    (id, updates, isHistoryAction = false) => {
+      let prevAnnotation = annotations.find((a) => a.id === id);
+
+      if (!isHistoryAction && prevAnnotation) {
+        const nextAnnotation = { ...prevAnnotation, ...updates };
+        history.record({
+          undo: () => dispatch({ type: "UPDATE", id, updates: prevAnnotation }),
+          redo: () => dispatch({ type: "UPDATE", id, updates: nextAnnotation }),
+        });
+      }
+
+      dispatch({ type: "UPDATE", id, updates });
+    },
+    [history, annotations],
+  );
+
+  const deleteAnnotation = useCallback(
+    (id, isHistoryAction = false) => {
+      const deletedAnnotation = annotations.find((a) => a.id === id);
+
+      if (!isHistoryAction && deletedAnnotation) {
+        history.record({
+          undo: () => dispatch({ type: "ADD", payload: deletedAnnotation }),
+          redo: () => dispatch({ type: "DELETE", id }),
+        });
+      }
+
+      dispatch({ type: "DELETE", id });
+    },
+    [history, annotations],
+  );
 
   // --- Zoom state (received from Toolbar via callback) ---
   const [zoom, setZoom] = useState(1);
@@ -52,22 +107,38 @@ export default function DocumentViewer() {
   // --- Keyboard shortcuts ---
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         if (createMode) {
           setCreateMode(false);
         }
       }
-      if (e.key === 'Delete' || e.key === 'Backspace') {
-        if (selectedAnnotationId && !e.target.closest('input, textarea')) {
+      if (e.key === "Delete" || e.key === "Backspace") {
+        if (selectedAnnotationId && !e.target.closest("input, textarea")) {
           deleteAnnotation(selectedAnnotationId);
           setSelectedAnnotationId(null);
         }
       }
+
+      // Undo/Redo shortcuts
+      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+      const cmdKey = isMac ? e.metaKey : e.ctrlKey;
+
+      if (cmdKey && e.key.toLowerCase() === 'z') {
+        if (e.shiftKey) {
+          history.redo();
+        } else {
+          history.undo();
+        }
+        e.preventDefault();
+      } else if (cmdKey && e.key.toLowerCase() === 'y') {
+        history.redo();
+        e.preventDefault();
+      }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [createMode, selectedAnnotationId, deleteAnnotation]);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [createMode, selectedAnnotationId, deleteAnnotation, history]);
 
   // --- Annotation creation ---
   const handleCreateAnnotation = (e) => {
@@ -81,12 +152,12 @@ export default function DocumentViewer() {
 
     const newAnnotation = {
       id: `ann-${annotations.length + 1}`,
-      label: 'New Annotation',
+      label: "New Annotation",
       x: x - 60,
       y: y - 15,
       width: 120,
       height: 30,
-      color: '#e74c3c',
+      color: "#e74c3c",
     };
 
     addAnnotation(newAnnotation);
@@ -119,6 +190,10 @@ export default function DocumentViewer() {
         onZoomChange={handleZoomChange}
         createMode={createMode}
         onToggleCreateMode={handleToggleCreateMode}
+        undo={history.undo}
+        redo={history.redo}
+        canUndo={history.canUndo}
+        canRedo={history.canRedo}
       />
 
       <FilterBar
@@ -133,10 +208,10 @@ export default function DocumentViewer() {
             className="document-wrapper"
             ref={containerRef}
             style={{
-              position: 'relative',
-              display: 'inline-block',
+              position: "relative",
+              display: "inline-block",
               width: 800 * zoom,
-              cursor: createMode ? 'crosshair' : 'default',
+              cursor: createMode ? "crosshair" : "default",
             }}
           >
             <img
@@ -144,11 +219,11 @@ export default function DocumentViewer() {
               alt="Document"
               className="document-image"
               style={{
-                width: '100%',
-                height: 'auto',
-                display: 'block',
-                userSelect: 'none',
-                pointerEvents: 'none',
+                width: "100%",
+                height: "auto",
+                display: "block",
+                userSelect: "none",
+                pointerEvents: "none",
               }}
               draggable={false}
             />
@@ -158,6 +233,7 @@ export default function DocumentViewer() {
               selectedId={selectedAnnotationId}
               onSelect={handleSelect}
               onDelete={handleDelete}
+              onUpdate={updateAnnotation}
               createMode={createMode}
               containerRef={containerRef}
               onCreateAnnotation={handleCreateAnnotation}
@@ -166,10 +242,10 @@ export default function DocumentViewer() {
           </div>
         </div>
 
-        <CommentsPanel
-          selectedAnnotation={selectedAnnotation}
-        />
+        <CommentsPanel selectedAnnotation={selectedAnnotation} />
       </div>
     </div>
   );
 }
+
+//

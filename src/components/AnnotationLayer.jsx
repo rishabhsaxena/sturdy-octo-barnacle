@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import AnnotationMarker from './AnnotationMarker';
+import { useState, useEffect } from "react";
+import AnnotationMarker from "./AnnotationMarker";
 
 export default function AnnotationLayer({
   annotations,
@@ -25,13 +25,13 @@ export default function AnnotationLayer({
   // Handle Escape to deselect annotation
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && selectedId) {
+      if (e.key === "Escape" && selectedId) {
         onSelect(null);
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedId, onSelect]);
 
   const handleLayerClick = (e) => {
@@ -51,7 +51,7 @@ export default function AnnotationLayer({
         clickX >= ann.x &&
         clickX <= ann.x + ann.width &&
         clickY >= ann.y &&
-        clickY <= ann.y + ann.height
+        clickY <= ann.y + ann.height,
     );
 
     if (clicked) {
@@ -65,11 +65,11 @@ export default function AnnotationLayer({
     <div
       className="annotation-layer"
       style={{
-        position: 'absolute',
+        position: "absolute",
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
+        width: "100%",
+        height: "100%",
       }}
       onClick={handleLayerClick}
       data-annotation-count={Object.keys(annotationMap).length}

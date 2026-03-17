@@ -4,8 +4,9 @@ import CommentThread from './CommentThread';
 
 export default function CommentsPanel({
   selectedAnnotation,
+  history,
 }) {
-  const { comments, loading, addComment } = useComments(selectedAnnotation?.id);
+  const { comments, loading, addComment } = useComments(selectedAnnotation?.id, history);
 
   // Update document title based on selected annotation
   useEffect(() => {
